@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Diagnóstico Step Up</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="app">
+    <header class="header">
+      <h1>Diagnóstico rápido — Step Up</h1>
+      <p>Responde 6 preguntas. Al final obtendrás una ruta recomendada.</p>
+    </header>
+
+    <section class="card" id="card">
+      <div class="progress">
+        <div class="bar" id="bar"></div>
+      </div>
+
+      <h2 id="qTitle">Pregunta</h2>
+      <p id="qHelp" class="muted"></p>
+
+      <div id="answers" class="answers"></div>
+
+      <div class="nav">
+        <button id="backBtn" class="btn secondary" type="button">Atrás</button>
+        <button id="resetBtn" class="btn secondary" type="button">Reiniciar</button>
+      </div>
+    </section>
+
+    <section class="card hidden" id="result">
+      <h2>Resultado</h2>
+      <div id="resultBox" class="resultBox"></div>
+
+      <div class="actions">
+        <button id="copyBtn" class="btn secondary" type="button">Copiar resumen</button>
+        <a id="waBtn" class="btn" href="#" target="_blank" rel="noreferrer">Enviar por WhatsApp</a>
+      </div>
+
+      <p class="muted small">
+        Tip: Puedes modificar preguntas y rutas en <strong>script.js</strong>.
+      </p>
+    </section>
+
+    <footer class="footer muted small">
+      Hecho para validación rápida (MVP).
+    </footer>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
