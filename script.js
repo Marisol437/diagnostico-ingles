@@ -75,9 +75,7 @@ const RESULTS = {
       En este momento, Step Up está diseñado para personas que necesitan usar
       inglés en su vida profesional o en su vida diaria.
     </p>
-    <p>
-      Si su interés es general o a largo plazo, puede volver a realizar esta
-      evaluación cuando tenga una necesidad concreta.
+    <p>Esperamos poder servirle en un futuro próximo.
     </p>
   `,
 },
@@ -241,6 +239,7 @@ resetBtn.addEventListener("click", resetAll);
 
 // Start
 render();
+
 
 
 
