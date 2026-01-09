@@ -4,7 +4,7 @@ const WHATSAPP_NUMBER = "57XXXXXXXXXX"; // <-- Pon tu número con indicativo (ej
 const QUESTIONS = [
   {
     id: "need_soon",
-    title: "1) ¿Necesita inglés en los próximos tres meses?",
+    title: "1)¿Necesita usar inglés en su vida profesional o en su vida diaria?",
     help: "Evaluación breve para confirmar si Step Up es la opción adecuada para usted.",
     answers: [
       { label: "Sí", value: "yes", next: "reason" },
@@ -230,4 +230,5 @@ resetBtn.addEventListener("click", resetAll);
 
 // Start
 render();
+
 
