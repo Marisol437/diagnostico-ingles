@@ -1,10 +1,10 @@
-no// ====== CONFIGURACIÓN (puedes editar sin miedo) ======
-const WHATSAPP_NUMBER = "57XXXXXXXXXX"; // <-- Pon tu número con indicativo (ej: 573001234567). Sin + ni espacios.
+// ====== CONFIGURACIÓN (puedes editar sin miedo) ======
+const WHATSAPP_NUMBER = "573167850234"; // <-- Pon tu número con indicativo (ej: 573001234567). Sin + ni espacios.
 
 const QUESTIONS = [
   {
     id: "need_soon",
-    title: "1)¿Necesita usar inglés en su vida profesional o en su vida diaria?",
+    title: "1) ¿Necesita usar inglés en su vida profesional o en su vida diaria?",
     help: "Evaluación breve para confirmar si Step Up es la opción adecuada para usted.",
     answers: [
       { label: "Sí", value: "yes", next: "reason" },
@@ -13,8 +13,8 @@ const QUESTIONS = [
   },
   {
     id: "reason",
-    title: "2) ¿Para qué lo necesitas?",
-    help: "Esto define tu ruta principal.",
+    title: "2) ¿Para qué lo necesita?",
+    help: "Esto define su ruta principal.",
     answers: [
       { label: "Trabajo", value: "work", next: "level" },
       { label: "Estudio", value: "study", next: "level" },
@@ -24,7 +24,7 @@ const QUESTIONS = [
   },
   {
     id: "level",
-    title: "3) ¿Cuál es tu nivel actual?",
+    title: "3) ¿Cuál es su nivel actual?",
     help: "El nivel define la complejidad del plan.",
     answers: [
       { label: "Cero / Muy básico", value: "A0-A1", next: "time" },
@@ -34,7 +34,7 @@ const QUESTIONS = [
   },
   {
     id: "time",
-    title: "4) ¿Cuánto tiempo real puedes dedicar por semana?",
+    title: "4) ¿Cuánto tiempo real puede dedicar por semana?",
     help: "Sin tiempo real, no hay resultados.",
     answers: [
       { label: "Menos de 2 horas", value: "<2h", next: "budget" },
@@ -44,8 +44,8 @@ const QUESTIONS = [
   },
   {
     id: "budget",
-    title: "5) ¿Tienes presupuesto para entrenamiento guiado?",
-    help: "No es juicio; solo define si eres lead caliente o frío.",
+    title: "5) ¿Cuenta con presupuesto para entrenamiento guiado?",
+    help: "Esta respuesta solo define el tipo de ruta recomendada.",
     answers: [
       { label: "Sí", value: "yes", next: "channel" },
       { label: "No por ahora", value: "no", next: "result_cold" },
@@ -53,8 +53,8 @@ const QUESTIONS = [
   },
   {
     id: "channel",
-    title: "6) ¿Cuál canal prefieres para el siguiente paso?",
-    help: "Esto define tu llamada a la acción.",
+    title: "6) ¿Qué canal prefiere para el siguiente paso?",
+    help: "Esto define la acción recomendada.",
     answers: [
       { label: "WhatsApp", value: "whatsapp", next: "result_yes" },
       { label: "Email", value: "email", next: "result_yes" },
@@ -63,34 +63,52 @@ const QUESTIONS = [
   },
 ];
 
-// Resultados
+// ====== RESULTADOS (lo que ve el usuario en pantalla) ======
 const RESULTS = {
   result_no: {
-  qualifies: "",
-  route: "",
-  nextStep: "",
-  message: `
-    <h2>Gracias por responder</h2>
-    <p>
-      En este momento, Step Up está diseñado para personas que necesitan usar
-      inglés en su vida profesional o en su vida diaria.
-    </p>
-    <p>Esperamos poder servirle en un futuro próximo.
-    </p>
-  `,
-},
+    // Interno (si lo necesitas para ti). No se muestra al usuario.
+    qualifies: "",
+    route: "",
+    nextStep: "",
+    // Usuario (esto SÍ se muestra)
+    message: `
+      <h2>Gracias por responder</h2>
+      <p>
+        En este momento, Step Up está diseñado para personas que necesitan usar
+        inglés en su vida profesional o en su vida diaria.
+      </p>
+      <p>Esperamos poder servirle en un futuro próximo.</p>
+    `,
+  },
 
   result_cold: {
-    qualifies: "NO (por ahora)",
-    route: "Lead frío",
-    nextStep: "Enviar recurso gratuito + opción de plan autoguiado",
-    message: "Hay necesidad, pero sin presupuesto. Recomendado: ruta de bajo costo y seguimiento.",
+    qualifies: "",
+    route: "",
+    nextStep: "",
+    message: `
+      <h2>Ruta recomendada</h2>
+      <p>
+        Con base en sus respuestas, una ruta autoguiada puede ser el mejor inicio en este momento.
+      </p>
+      <p>
+        Si desea, puede escribirnos para recibir una recomendación puntual de recursos y próximos pasos.
+      </p>
+    `,
   },
+
   result_yes: {
-    qualifies: "SÍ",
-    route: "Cliente potencial",
-    nextStep: "Agendar llamada corta / enviar propuesta",
-    message: "Califica: hay urgencia + presupuesto + canal definido.",
+    qualifies: "",
+    route: "",
+    nextStep: "",
+    message: `
+      <h2>Ruta recomendada</h2>
+      <p>
+        Con base en sus respuestas, lo más eficiente es continuar con el Diagnóstico de Inglés Profesional.
+      </p>
+      <p>
+        Seleccione su canal preferido y continúe para coordinar el siguiente paso.
+      </p>
+    `,
   },
 };
 
@@ -115,7 +133,7 @@ let state = {
 };
 
 function findQuestion(id) {
-  return QUESTIONS.find(q => q.id === id);
+  return QUESTIONS.find((q) => q.id === id);
 }
 
 function progressPct() {
@@ -124,11 +142,36 @@ function progressPct() {
   return Math.min(100, Math.round((answered / total) * 100));
 }
 
-function render() {
-  const pct = progressPct();
-  bar.style.width = pct + "%";
+function stripHtml(html) {
+  const tmp = document.createElement("div");
+  tmp.innerHTML = html;
+  return (tmp.textContent || tmp.innerText || "").trim();
+}
 
-  // Si es resultado
+// Resumen interno SOLO para Copiar/WhatsApp (no se muestra)
+function buildInternalSummary(resultId) {
+  const res = RESULTS[resultId];
+  const lines = [];
+
+  lines.push("STEP UP — PRESELECCIÓN");
+  lines.push("----------------------");
+
+  lines.push("Respuestas:");
+  for (const q of QUESTIONS) {
+    const r = state.responses[q.id];
+    if (r) lines.push(`- ${q.title.replace(/^\d+\)\s*/, "")}: ${r.label}`);
+  }
+
+  lines.push("");
+  lines.push("Mensaje mostrado al usuario:");
+  lines.push(stripHtml(res.message));
+
+  return lines.join("\n");
+}
+
+function render() {
+  bar.style.width = progressPct() + "%";
+
   if (state.current.startsWith("result_")) {
     showResult(state.current);
     return;
@@ -139,7 +182,7 @@ function render() {
   qHelp.textContent = q.help || "";
   answersEl.innerHTML = "";
 
-  q.answers.forEach(a => {
+  q.answers.forEach((a) => {
     const btn = document.createElement("button");
     btn.className = "answerBtn";
     btn.type = "button";
@@ -156,49 +199,22 @@ function render() {
   backBtn.disabled = history.length === 0;
 }
 
-function buildSummary(resultId) {
-  const res = RESULTS[resultId];
-  const lines = [];
-
-  lines.push("DIAGNÓSTICO STEP UP");
-  lines.push("-------------------");
-  lines.push(`Califica: ${res.qualifies}`);
-  lines.push(`Ruta: ${res.route}`);
-  lines.push("");
-
-  // Respuestas
-  lines.push("Respuestas:");
-  for (const q of QUESTIONS) {
-    if (state.responses[q.id]) {
-      lines.push(`- ${q.title.replace(/^\d+\)\s*/, "")}: ${state.responses[q.id].label}`);
-    }
-  }
-
-  lines.push("");
-  lines.push("Siguiente paso recomendado:");
-  lines.push(`- ${res.nextStep}`);
-  lines.push("");
-  lines.push(res.message);
-
-  return lines.join("\n");
-}
-
 function showResult(resultId) {
   card.classList.add("hidden");
   resultCard.classList.remove("hidden");
 
- // Mostrar SOLO el mensaje para el usuario
-resultBox.innerHTML = RESULTS[resultId].message;
+  // 1) UI para usuario: SOLO mensaje (HTML)
+  resultBox.innerHTML = RESULTS[resultId].message;
 
+  // 2) Interno para ti (copiar / WhatsApp)
+  const summary = buildInternalSummary(resultId);
 
   // WhatsApp link
   const encoded = encodeURIComponent(summary);
   const numberOk = WHATSAPP_NUMBER && WHATSAPP_NUMBER !== "57XXXXXXXXXX";
-  const waBase = numberOk
+  waBtn.href = numberOk
     ? `https://wa.me/${WHATSAPP_NUMBER}?text=${encoded}`
     : `https://wa.me/?text=${encoded}`;
-
-  waBtn.href = waBase;
 
   copyBtn.onclick = async () => {
     try {
@@ -223,10 +239,6 @@ backBtn.addEventListener("click", () => {
   if (history.length === 0) return;
   const prev = history.pop();
 
-  // borrar respuesta de la pregunta actual anterior (la última contestada)
-  // Identificamos cuál fue la pregunta que se respondió para llegar aquí:
-  // Tomamos la pregunta "prev" como la que se estaba mostrando antes.
-  // Además, si retrocedes desde una pregunta, borramos la respuesta de esa pregunta.
   const currentQ = findQuestion(prev);
   if (currentQ && state.responses[currentQ.id]) {
     delete state.responses[currentQ.id];
@@ -240,8 +252,3 @@ resetBtn.addEventListener("click", resetAll);
 
 // Start
 render();
-
-
-
-
-
