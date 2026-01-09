@@ -1,4 +1,4 @@
-// ====== CONFIGURACIÓN (puedes editar sin miedo) ======
+no// ====== CONFIGURACIÓN (puedes editar sin miedo) ======
 const WHATSAPP_NUMBER = "57XXXXXXXXXX"; // <-- Pon tu número con indicativo (ej: 573001234567). Sin + ni espacios.
 
 const QUESTIONS = [
@@ -187,8 +187,9 @@ function showResult(resultId) {
   card.classList.add("hidden");
   resultCard.classList.remove("hidden");
 
-  const summary = buildSummary(resultId);
-  resultBox.textContent = summary;
+ // Mostrar SOLO el mensaje para el usuario
+resultBox.innerHTML = RESULTS[resultId].message;
+
 
   // WhatsApp link
   const encoded = encodeURIComponent(summary);
@@ -239,6 +240,7 @@ resetBtn.addEventListener("click", resetAll);
 
 // Start
 render();
+
 
 
 
