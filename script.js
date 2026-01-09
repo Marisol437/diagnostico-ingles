@@ -66,11 +66,22 @@ const QUESTIONS = [
 // Resultados
 const RESULTS = {
   result_no: {
-    qualifies: "NO",
-    route: "Lead no urgente",
-    nextStep: "Ofrecer recurso gratuito + invitar a volver cuando haya urgencia",
-    message: "No hay urgencia (3 meses). No se descarta para siempre: se nutre como lead frío.",
-  },
+  qualifies: "",
+  route: "",
+  nextStep: "",
+  message: `
+    <h2>Gracias por responder</h2>
+    <p>
+      En este momento, Step Up está diseñado para personas que necesitan usar
+      inglés en su vida profesional o en su vida diaria.
+    </p>
+    <p>
+      Si su interés es general o a largo plazo, puede volver a realizar esta
+      evaluación cuando tenga una necesidad concreta.
+    </p>
+  `,
+},
+
   result_cold: {
     qualifies: "NO (por ahora)",
     route: "Lead frío",
@@ -230,5 +241,6 @@ resetBtn.addEventListener("click", resetAll);
 
 // Start
 render();
+
 
 
